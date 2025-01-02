@@ -40,9 +40,5 @@ jobs:
             -Dsonar.exclusions=**/*.test.ts,**/*.spec.ts,**/*.e2e.ts
             -Dsonar.test.exclusions=**/*.test.ts,**/*.spec.ts,**/*.e2e.ts
             -Dsonar.coverage.exclusions=**/*.test.ts,**/*.spec.ts,**/*.e2e.ts
-            -Dsonar.issue.ignore.multicriteria=e1
-            -Dsonar.issue.ignore.multicriteria.e1.ruleKey=*
-            -Dsonar.issue.ignore.multicriteria.e1.resourceKeyPattern=.*
-
-      - name: Analyze only code duplication
-        run: echo "SonarCloud is configured to check for duplication only."
+            -Dsonar.issuesReport.skip=true
+            -Dsonar.analysis.mode=preview
