@@ -40,5 +40,4 @@ jobs:
             -Dsonar.exclusions=**/*.test.ts,**/*.spec.ts,**/*.e2e.ts
             -Dsonar.test.exclusions=**/*.test.ts,**/*.spec.ts,**/*.e2e.ts
             -Dsonar.coverage.exclusions=**/*.test.ts,**/*.spec.ts,**/*.e2e.ts
-            -Dsonar.issuesReport.skip=true
-            -Dsonar.analysis.mode=preview
+            -Dsonar.duplication.includeOnly=true
