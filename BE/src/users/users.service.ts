@@ -11,26 +11,7 @@ interface User {
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [
-    {
-      email: 'boggdan21test@gmail.com',
-      password: 'Test4234!',
-      name: 'Bohdan',
-      country: 'USA',
-    },
-    {
-      email: 'john.doe@example.com',
-      password: 'Password123!',
-      name: 'John Doe',
-      country: 'Canada',
-    },
-    {
-      email: 'jane.smith@example.com',
-      password: 'SecurePass456!',
-      name: 'Jane Smith',
-      country: 'United Kingdom',
-    },
-  ];
+  private users: User[] = [];
   create(createUserDto: CreateUserDto) {
     const newUser: User = {
       name: createUserDto.name,
