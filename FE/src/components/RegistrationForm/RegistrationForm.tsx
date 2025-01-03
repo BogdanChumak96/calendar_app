@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { TextField, Button, MenuItem } from "@mui/material";
+import { useState, FormEvent } from "react";
+import { TextField, Button, MenuItem, CircularProgress } from "@mui/material";
 
 const countries = [
   { code: "UA", name: "Ukraine" },
@@ -9,9 +9,7 @@ const countries = [
   { code: "AU", name: "Australia" },
 ];
 
-export const RegistrationForm = ({
-  onSubmit,
-}: {
+type RegistrationFormProps = {
   onSubmit: (values: {
     name: string;
     email: string;
@@ -19,10 +17,16 @@ export const RegistrationForm = ({
     confirmPassword: string;
     country: string;
   }) => void;
-}) => {
+  isSubmitting: boolean;
+};
+
+export const RegistrationForm = ({
+  onSubmit,
+  isSubmitting,
+}: RegistrationFormProps) => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget as HTMLFormElement);
 
@@ -42,6 +46,12 @@ export const RegistrationForm = ({
     setPasswordError(null);
     onSubmit(values);
   };
+
+  const countryItems = countries.map((country) => (
+    <MenuItem key={country.code} value={country.name}>
+      {country.name}
+    </MenuItem>
+  ));
 
   return (
     <form onSubmit={handleSubmit}>
@@ -81,14 +91,20 @@ export const RegistrationForm = ({
         defaultValue=''
         required
       >
-        {countries.map((country) => (
-          <MenuItem key={country.code} value={country.name}>
-            {country.name}
-          </MenuItem>
-        ))}
+        {countryItems}
       </TextField>
-      <Button type='submit' variant='contained' fullWidth sx={{ mt: 2 }}>
-        Register
+      <Button
+        type='submit'
+        variant='contained'
+        fullWidth
+        sx={{ mt: 2 }}
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <CircularProgress size={24} sx={{ color: "white" }} />
+        ) : (
+          "Register"
+        )}
       </Button>
     </form>
   );

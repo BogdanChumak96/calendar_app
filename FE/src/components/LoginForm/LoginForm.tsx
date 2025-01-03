@@ -1,22 +1,23 @@
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, CircularProgress } from "@mui/material";
+import { FC, FormEvent, useState } from "react";
 
 type LoginFormValues = {
   email: string;
   password: string;
 };
 
-export const LoginForm = ({
-  onSubmit,
-}: {
+type LoginFormProps = {
   onSubmit: (values: LoginFormValues) => void;
-}) => {
-  const handleSubmit = (event: React.FormEvent) => {
+  isSubmitting: boolean;
+};
+
+export const LoginForm: FC<LoginFormProps> = ({ onSubmit, isSubmitting }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget as HTMLFormElement);
-    onSubmit({
-      email: (data.get("email") as string) || "",
-      password: (data.get("password") as string) || "",
-    });
+    onSubmit({ email, password });
   };
 
   return (
@@ -25,6 +26,8 @@ export const LoginForm = ({
         fullWidth
         label='Email'
         name='email'
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         margin='normal'
         required
       />
@@ -33,11 +36,23 @@ export const LoginForm = ({
         label='Password'
         name='password'
         type='password'
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         margin='normal'
         required
       />
-      <Button type='submit' variant='contained' fullWidth sx={{ mt: 2 }}>
-        Login
+      <Button
+        type='submit'
+        disabled={isSubmitting}
+        variant='contained'
+        fullWidth
+        sx={{ mt: 2 }}
+      >
+        {isSubmitting ? (
+          <CircularProgress size={24} sx={{ color: "white" }} />
+        ) : (
+          "Login"
+        )}
       </Button>
     </form>
   );
