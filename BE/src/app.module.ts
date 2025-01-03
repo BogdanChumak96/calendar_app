@@ -1,10 +1,20 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { RefreshTokenMiddleware } from './middleware/refresh-token.middleware';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    UsersModule,
+    AuthModule,
+    SharedModule,
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RefreshTokenMiddleware).forRoutes('users/profile');
+  }
+}
