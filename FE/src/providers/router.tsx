@@ -8,7 +8,7 @@ const Registration = lazy(() => import("@/pages/registration"));
 
 const router = createBrowserRouter([
   {
-    path: "/calendar",
+    path: "/",
     element: (
       <PrivateRoute>
         <Layout>

@@ -45,9 +45,8 @@ export class AuthController {
   async register(@Body() registerDto: RegisterDto, @Res() res: Response) {
     try {
       const user = await this.authService.register(registerDto);
-
       const { accessToken, refreshToken } =
-        await this.authService.generateTokens(user.email);
+        await this.authService.generateTokens({ email: user.email });
 
       res.cookie('accessToken', accessToken, {
         httpOnly: true,

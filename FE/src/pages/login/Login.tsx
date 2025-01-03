@@ -1,7 +1,7 @@
 import { LoginForm } from "@/components";
 import { useLogin } from "@/hooks";
-import { Container, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Box, Container, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { mutate, isPending } = useLogin();
@@ -10,7 +10,7 @@ const Login = () => {
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
       await mutate({ email: values.email, password: values.password });
-      navigate("/calendar");
+      navigate("/");
     } catch (error) {
       console.error("Login failed", error);
     }
@@ -25,6 +25,17 @@ const Login = () => {
         Login
       </Typography>
       <LoginForm onSubmit={handleSubmit} isSubmitting={isPending} />
+      <Box mt={2}>
+        <Typography variant='body2' align='center'>
+          Don't have an account?{" "}
+          <Link
+            to='/registration'
+            style={{ color: "#3f51b5", textDecoration: "none" }}
+          >
+            Register here
+          </Link>
+        </Typography>
+      </Box>
     </Container>
   );
 };

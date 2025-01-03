@@ -9,6 +9,7 @@ import { LoginDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcryptjs';
 import { RegisterDto } from './dto/register-user.dto';
 import { ConfigService } from '@nestjs/config';
+import { User } from 'src/users/model/user.schema';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +21,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<any> {
     try {
-      const user = await this.usersService.findOneByEmail(email);
+      const user = await this.usersService.findByEmail(email);
       if (user && (await bcrypt.compare(password, user.password))) {
         const { ...result } = user;
         return result;
@@ -42,27 +43,23 @@ export class AuthService {
     }
   }
 
-  async register(createUserDto: RegisterDto): Promise<any> {
-    try {
-      const { password, email, country, name } = createUserDto;
-
-      const existingUser = await this.usersService.findOneByEmail(email);
-      if (existingUser) {
-        throw new ConflictException('User with this email already exists');
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      return this.usersService.create({
-        email,
-        country,
-        name,
-        password: hashedPassword,
-      });
-    } catch (error) {
-      if (error instanceof ConflictException) throw error;
-      throw new ConflictException('Registration failed');
+  async register(createUserDto: RegisterDto): Promise<User> {
+    const { email, password, country, name } = createUserDto;
+    const existingUser = await this.usersService.findByEmail(email);
+    if (existingUser) {
+      throw new ConflictException('User with this email already exists');
     }
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await this.usersService.create({
+      email,
+      country,
+      name,
+      password: hashedPassword,
+    });
+
+    console.log('User successfully created:', newUser);
+    return newUser;
   }
 
   generateTokens(payload: Record<string, any>) {
