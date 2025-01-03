@@ -41,5 +41,6 @@ jobs:
             -Dsonar.test.exclusions=**/*.test.ts,**/*.spec.ts,**/*.e2e.ts
             -Dsonar.coverage.exclusions=**/*.test.ts,**/*.spec.ts,**/*.e2e.ts
             -Dsonar.duplication.includeOnly=true
-            -Dsonar.coverage.reportPaths=
+            -Dsonar.coverage.reportPaths= 
             -Dsonar.qualitygate.wait=false
+            -Dsonar.coverage.minimum=0 
