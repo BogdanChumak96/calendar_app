@@ -45,3 +45,4 @@ jobs:
             -Dsonar.qualitygate.wait=false
             -Dsonar.coverage.minimum=0
             -Dsonar.testExecutionReportPaths= 
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov-report/index-lcov.xml
