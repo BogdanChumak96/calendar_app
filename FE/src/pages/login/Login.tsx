@@ -10,7 +10,9 @@ const Login = () => {
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
       await mutate({ email: values.email, password: values.password });
-      navigate("/");
+      if (!isPending) {
+        navigate("/");
+      }
     } catch (error) {
       console.error("Login failed", error);
     }

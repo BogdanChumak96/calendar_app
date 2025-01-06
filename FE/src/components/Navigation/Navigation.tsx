@@ -15,7 +15,7 @@ export const Navigation = () => {
   };
 
   return (
-    <nav className='flex justify-between items-center max-w-7xl mx-auto p-4 transition-colors duration-300'>
+    <nav className='flex justify-between items-center max-w-7.5xl mx-auto p-4 transition-colors duration-300'>
       <div className='fixed inset-0 bg-primary transition-colors duration-300 -z-10'></div>
 
       <div className='text-2xl font-bold text-primary-foreground'>
@@ -23,10 +23,7 @@ export const Navigation = () => {
       </div>
 
       <div className='space-x-4 flex items-center'>
-        <Link
-          to='/'
-          className='text-primary-foreground hover:text-secondary-foreground font-medium'
-        >
+        <Link to='/' className='text-primary-foreground font-medium'>
           Home
         </Link>
         <IconButton

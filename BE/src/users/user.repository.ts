@@ -10,11 +10,9 @@ export class UserRepository {
   ) {}
 
   async createUser(user: Partial<User>): Promise<User> {
-    console.log('Attempting to create user:', user);
     try {
       const newUser = new this.userModel(user);
       const savedUser = await newUser.save();
-      console.log('User successfully saved:', savedUser);
       return savedUser;
     } catch (error) {
       console.error('Error while creating user:', error);
