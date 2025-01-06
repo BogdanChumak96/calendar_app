@@ -5,6 +5,7 @@ import { Layout } from "@/components/Layout/Layout";
 
 const Login = lazy(() => import("@/pages/login"));
 const Registration = lazy(() => import("@/pages/registration"));
+const Calendar = lazy(() => import("@/pages/calendar"));
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <Layout>
           <Suspense fallback={<div>Loading...</div>}>
-            <div>Calendar</div>
+            <Calendar />
           </Suspense>
         </Layout>
       </PrivateRoute>

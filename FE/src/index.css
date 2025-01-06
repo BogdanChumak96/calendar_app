@@ -73,4 +73,13 @@
   body {
     @apply bg-background text-foreground transition-colors duration-300 ease-in-out;
   }
+
+  .draggable {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .draggable:active {
+    cursor: grabbing;
+  }
 }

@@ -21,15 +21,10 @@ export class RefreshTokenMiddleware implements NestMiddleware {
         const currentTime = Math.floor(Date.now() / 1000);
 
         if (decoded && decoded.exp < currentTime) {
-          console.log('Access token expired:', accessToken);
-
           const email =
             await this.authService.validateRefreshToken(refreshToken);
           const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
             await this.authService.generateTokens({ email });
-
-          console.log('New access token generated:', newAccessToken);
-          console.log('New refresh token generated:', newRefreshToken);
 
           res.cookie('accessToken', newAccessToken, {
             httpOnly: true,

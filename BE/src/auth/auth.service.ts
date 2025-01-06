@@ -32,9 +32,15 @@ export class AuthService {
     }
   }
 
-  async login(user: LoginDto) {
+  async login(loginDto: LoginDto) {
     try {
-      const payload = { email: user.email };
+      const user = await this.usersService.findByEmail(loginDto.email);
+
+      if (!user || !(await bcrypt.compare(loginDto.password, user.password))) {
+        throw new UnauthorizedException('Invalid email or password');
+      }
+
+      const payload = { email: user.email, id: user._id.toString() };
       const { accessToken, refreshToken } = this.generateTokens(payload);
 
       return { accessToken, refreshToken };
@@ -58,7 +64,6 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    console.log('User successfully created:', newUser);
     return newUser;
   }
 

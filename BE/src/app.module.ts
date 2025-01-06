@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { RefreshTokenMiddleware } from './middleware/refresh-token.middleware';
 import { SharedModule } from './shared/shared.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -19,6 +20,8 @@ import { MongooseModule } from '@nestjs/mongoose';
       }),
       inject: [ConfigService],
     }),
+    TasksModule,
+    TasksModule,
   ],
 })
 export class AppModule implements NestModule {
