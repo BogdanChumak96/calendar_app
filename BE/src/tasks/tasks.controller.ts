@@ -13,8 +13,8 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './model/task.schema';
-import { GetUser } from 'src/users/decorators/get-user.decorator';
-import { AuthGuard } from 'src/shared/guards/auth.guard';
+import { GetUser } from '../users/decorators/get-user.decorator';
+import { AuthGuard } from '../shared/guards/auth.guard';
 
 @UseGuards(AuthGuard)
 @Controller('tasks')
