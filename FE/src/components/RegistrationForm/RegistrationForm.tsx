@@ -1,22 +1,17 @@
-import { useState, FormEvent } from "react";
+import React, { useState } from "react";
 import { TextField, Button, MenuItem, CircularProgress } from "@mui/material";
+import { COUNTRIES } from "@/common/constants";
 
-const countries = [
-  { code: "UA", name: "Ukraine" },
-  { code: "US", name: "United States" },
-  { code: "CA", name: "Canada" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "AU", name: "Australia" },
-];
+type RegistrationFormValues = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  country: string;
+};
 
 type RegistrationFormProps = {
-  onSubmit: (values: {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    country: string;
-  }) => void;
+  onSubmit: (values: RegistrationFormValues) => void;
   isSubmitting: boolean;
 };
 
@@ -25,37 +20,46 @@ export const RegistrationForm = ({
   isSubmitting,
 }: RegistrationFormProps) => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [formValues, setFormValues] = useState<RegistrationFormValues>({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    country: "",
+  });
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormValues({
+      ...formValues,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget as HTMLFormElement);
 
-    const values = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      confirmPassword: formData.get("confirmPassword") as string,
-      country: formData.get("country") as string,
-    };
-
-    if (values.password !== values.confirmPassword) {
+    if (formValues.password !== formValues.confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
     }
 
     setPasswordError(null);
-    onSubmit(values);
+    onSubmit(formValues);
   };
-
-  const countryItems = countries.map((country) => (
-    <MenuItem key={country.code} value={country.name}>
-      {country.name}
-    </MenuItem>
-  ));
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextField fullWidth label='Name' name='name' margin='normal' required />
+      <TextField
+        fullWidth
+        label='Name'
+        name='name'
+        margin='normal'
+        required
+        value={formValues.name}
+        onChange={handleChange}
+      />
       <TextField
         fullWidth
         label='Email'
@@ -63,6 +67,8 @@ export const RegistrationForm = ({
         margin='normal'
         required
         type='email'
+        value={formValues.email}
+        onChange={handleChange}
       />
       <TextField
         fullWidth
@@ -71,6 +77,8 @@ export const RegistrationForm = ({
         margin='normal'
         required
         type='password'
+        value={formValues.password}
+        onChange={handleChange}
       />
       <TextField
         fullWidth
@@ -79,6 +87,8 @@ export const RegistrationForm = ({
         margin='normal'
         required
         type='password'
+        value={formValues.confirmPassword}
+        onChange={handleChange}
         error={!!passwordError}
         helperText={passwordError}
       />
@@ -88,18 +98,17 @@ export const RegistrationForm = ({
         label='Country'
         name='country'
         margin='normal'
-        defaultValue=''
         required
+        value={formValues.country}
+        onChange={handleChange}
       >
-        {countryItems}
+        {COUNTRIES.map((country) => (
+          <MenuItem key={country.code} value={country.code}>
+            {country.name}
+          </MenuItem>
+        ))}
       </TextField>
-      <Button
-        type='submit'
-        variant='contained'
-        fullWidth
-        sx={{ mt: 2 }}
-        disabled={isSubmitting}
-      >
+      <Button type='submit' variant='contained' fullWidth sx={{ mt: 2 }}>
         {isSubmitting ? (
           <CircularProgress size={24} sx={{ color: "white" }} />
         ) : (

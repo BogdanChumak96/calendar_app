@@ -42,6 +42,13 @@ export class TasksRepository {
     return this.taskModel.find(filter).exec();
   }
 
+  async searchTasks(userId: string, query: string): Promise<Task[]> {
+    return this.taskModel.find({
+      userId: new Types.ObjectId(userId),
+      title: { $regex: query, $options: 'i' },
+    });
+  }
+
   async findTasksByUser(userId: string): Promise<Task[]> {
     return this.taskModel.find({ userId }).exec();
   }

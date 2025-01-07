@@ -2,46 +2,73 @@ import { FC } from "react";
 import Grid from "@mui/material/Grid2";
 import dayjs from "dayjs";
 import { DayItem } from "./DayItem";
+import { useTaskStore } from "@/store";
+import { Task, Holiday } from "@/common/types";
 
 interface MonthViewProps {
   daysInMonth: number;
   firstDayOfWeek: number;
-  tasks: { date: number; title: string; id: string }[];
+  tasks: Task[] | undefined;
   currentMonth: dayjs.Dayjs;
+  holidays: Holiday[] | undefined;
 }
 
+const getTasksForDay = (tasks: Task[] | undefined, date: string) => {
+  return tasks?.filter((task) => dayjs(task.dueDate).isSame(date, "day")) || [];
+};
+
+const getTotalCells = (daysInMonth: number, firstDayOfWeek: number) => {
+  return Math.ceil((daysInMonth + firstDayOfWeek) / 7) * 7;
+};
+
 export const MonthView: FC<MonthViewProps> = ({
-  daysInMonth = 30,
-  firstDayOfWeek = 0,
-  tasks = [],
-  currentMonth = dayjs(),
+  daysInMonth,
+  firstDayOfWeek,
+  tasks,
+  currentMonth,
+  holidays,
 }) => {
-  const totalCells = Math.ceil((daysInMonth + firstDayOfWeek) / 7) * 7;
+  const { setTaskCreation } = useTaskStore();
+
+  const totalCells = getTotalCells(daysInMonth, firstDayOfWeek);
+
+  const handleDayDoubleClick = (day: string) => {
+    setTaskCreation(day, true);
+  };
 
   return (
     <Grid container spacing={1} columns={7}>
       {Array.from({ length: totalCells }).map((_, index) => {
         const day = index - firstDayOfWeek + 1;
-        const cellDate = currentMonth.clone().date(day);
+        const cellDate = currentMonth.clone().date(day).format("YYYY-MM-DD");
         const isValidDate = day > 0 && day <= daysInMonth;
 
-        const dayTasks = tasks.filter((task) => {
-          const taskDate = dayjs(task.date);
-          const isSameDay = isValidDate && taskDate.isSame(cellDate, "day");
+        const dayTasks = isValidDate ? getTasksForDay(tasks, cellDate) : [];
 
-          return isSameDay;
-        });
-
-        const key = isValidDate
-          ? cellDate.format("YYYY-MM-DD")
-          : `empty-${index}`;
+        const key = isValidDate ? cellDate : `empty-${index}`;
 
         return (
-          <Grid size={1} key={key}>
-            <DayItem
-              day={isValidDate ? cellDate.format("D") : ""}
-              tasks={dayTasks}
-            />
+          <Grid
+            size={1}
+            key={key}
+            sx={{
+              height: "170px",
+              backgroundColor: isValidDate ? "#1E1E1E" : "#252526",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+            onDoubleClick={() => isValidDate && handleDayDoubleClick(cellDate)}
+          >
+            {isValidDate && (
+              <>
+                <div className='text-xs text-gray-500 ml-2'>
+                  {dayjs(cellDate).date()}
+                </div>
+
+                <DayItem day={cellDate} tasks={dayTasks} holidays={holidays} />
+              </>
+            )}
           </Grid>
         );
       })}

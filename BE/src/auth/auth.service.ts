@@ -40,7 +40,11 @@ export class AuthService {
         throw new UnauthorizedException('Invalid email or password');
       }
 
-      const payload = { email: user.email, id: user._id.toString() };
+      const payload = {
+        email: user.email,
+        id: user._id.toString(),
+        country: user.country,
+      };
       const { accessToken, refreshToken } = this.generateTokens(payload);
 
       return { accessToken, refreshToken };

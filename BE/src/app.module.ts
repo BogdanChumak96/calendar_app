@@ -6,6 +6,7 @@ import { RefreshTokenMiddleware } from './middleware/refresh-token.middleware';
 import { SharedModule } from './shared/shared.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TasksModule } from './tasks/tasks.module';
+import { LoggingMiddleware } from './middleware/logging.middleware';
 
 @Module({
   imports: [
@@ -26,6 +27,10 @@ import { TasksModule } from './tasks/tasks.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RefreshTokenMiddleware).forRoutes('users/profile');
+    consumer
+      .apply(LoggingMiddleware)
+      .forRoutes('*')
+      .apply(RefreshTokenMiddleware)
+      .forRoutes('users/profile');
   }
 }

@@ -65,6 +65,10 @@
   }
 }
 
+.text-primary {
+  color: var(--foreground, #000);
+}
+
 @layer base {
   * {
     @apply border-border;

@@ -1,6 +1,6 @@
+import { RegistrationFormValues } from "@/common/types";
 import { RegistrationForm } from "@/components";
 import { useRegistration } from "@/hooks";
-import { RegistrationFormValues } from "@/types";
 import { Container, Typography, Box } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -9,7 +9,7 @@ const Registration = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (values: RegistrationFormValues) => {
-    await mutate({
+    mutate({
       email: values.email,
       password: values.password,
       name: values.name,
