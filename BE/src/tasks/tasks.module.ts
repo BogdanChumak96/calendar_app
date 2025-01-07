@@ -4,7 +4,7 @@ import { TasksController } from './tasks.controller';
 import { TasksRepository } from './tasks.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Task, TaskSchema } from './model/task.schema';
-import { SharedModule } from 'src/shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
   imports: [

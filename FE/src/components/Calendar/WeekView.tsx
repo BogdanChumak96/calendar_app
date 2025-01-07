@@ -7,7 +7,7 @@ import { Holiday, Task } from "@/common/types";
 interface WeekViewProps {
   startOfWeek: dayjs.Dayjs;
   tasks: Task[] | undefined;
-  holidays: Holiday[];
+  holidays: Holiday[] | undefined;
 }
 
 export const WeekView: FC<WeekViewProps> = ({
