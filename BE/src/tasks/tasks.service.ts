@@ -20,6 +20,24 @@ export class TasksService {
     return this.tasksRepository.createTask(taskData);
   }
 
+  async searchTasks(userId: string, query: string): Promise<Task[]> {
+    const tasks = await this.tasksRepository.searchTasks(userId, query);
+
+    return tasks;
+  }
+
+  async getHolidays(year: string, code: string) {
+    try {
+      const response = await fetch(
+        `https://date.nager.at/api/v3/PublicHolidays/${year}/${code}`,
+      );
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching holidays:', error);
+      return [];
+    }
+  }
+
   async getTasksByDateRange(
     userId: string,
     startDate: string,

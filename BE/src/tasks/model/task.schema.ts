@@ -36,6 +36,8 @@ export class Task {
   fixed: boolean;
 }
 
-export type TaskDocument = Task & Document;
-
 export const TaskSchema = SchemaFactory.createForClass(Task);
+
+TaskSchema.index({ title: 'text' });
+
+export type TaskDocument = Task & Document;

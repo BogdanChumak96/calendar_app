@@ -12,7 +12,7 @@ export const Layout: FC<LayoutProps> = ({ children = null }) => {
         <Navigation />
       </header>
 
-      <main className='flex-1 p-4'>
+      <main className='flex-1 '>
         <div className='max-w-7.5xl mx-auto'>{children}</div>
       </main>
     </div>

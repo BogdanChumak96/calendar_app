@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout/Layout";
-import { useVerifyToken } from "@/hooks/useAuthVerification";
+import { Loader } from "@/components";
+import { useVerifyToken } from "@/hooks";
 import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
@@ -8,7 +8,7 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, isLoading } = useVerifyToken();
 
   if (isLoading) {
-    return <Layout>Loading...</Layout>;
+    return <Loader />;
   }
 
   if (!isAuthenticated) {

@@ -1,62 +1,55 @@
-import { FC, useState } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "react-beautiful-dnd";
-import { TaskItem } from "./TaskItem";
+import { FC } from "react";
+import { Droppable } from "@hello-pangea/dnd";
+import { Task } from "@/common/types";
+import { Holiday } from "@/common/types";
+import { DraggableTasks } from "./DraggableTasks";
+import dayjs from "dayjs";
+import { HolidayTasks } from "./HolidayTasks";
+import TaskInput from "./TaskInput";
 
 interface DayItemProps {
-  day: number | string;
-  tasks: { id: string; title: string; date: number }[];
+  day: string;
+  tasks: Task[] | undefined;
+  holidays: Holiday[] | undefined;
 }
 
-export const DayItem: FC<DayItemProps> = ({ day, tasks }) => {
-  const [dayTasks, setDayTasks] = useState(tasks);
-
-  const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-
-    if (result.destination.index === result.source.index) return;
-
-    const updatedTasks = Array.from(dayTasks);
-    const [reorderedTask] = updatedTasks.splice(result.source.index, 1);
-    updatedTasks.splice(result.destination.index, 0, reorderedTask);
-
-    setDayTasks(updatedTasks);
-  };
+export const DayItem: FC<DayItemProps> = ({
+  day,
+  tasks = [],
+  holidays = [],
+}) => {
+  const currentDate = dayjs();
+  const sortedTasks = tasks
+    .slice()
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
 
   return (
-    <div className='bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg h-36 p-2 flex flex-col border border-gray-300 shadow-sm'>
-      <span className='text-gray-500 text-sm'>{day}</span>
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId={`day-${day}`}>
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className='overflow-y-auto flex-1 w-full'
-            >
-              {dayTasks.map((task, index) => (
-                <Draggable key={task.id} draggableId={task.id} index={index}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className='mb-1 draggable'
-                    >
-                      <TaskItem title={task.title} date={task.date} />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </div>
+    <Droppable droppableId={day}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          className='flex flex-col'
+          style={{
+            minHeight: "150px",
+            padding: "8px",
+            borderRadius: "4px",
+            transition: "background-color 0.3s ease",
+            overflowY: "auto",
+          }}
+        >
+          <HolidayTasks
+            holidays={holidays}
+            currentDate={currentDate}
+            day={day}
+          />
+
+          <TaskInput day={day} />
+
+          <DraggableTasks tasks={sortedTasks} />
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
   );
 };

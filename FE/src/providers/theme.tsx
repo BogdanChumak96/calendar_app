@@ -1,46 +1,14 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import { ReactNode, useEffect } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-type ThemeMode = "light" | "dark";
-
-interface ThemeContextProps {
-  mode: ThemeMode;
-  toggleTheme: () => void;
-}
-
-const ThemeModeContext = createContext<ThemeContextProps | undefined>(
-  undefined
-);
-
-export const useThemeMode = () => {
-  const context = useContext(ThemeModeContext);
-  if (!context) {
-    throw new Error("useThemeMode must be used within a ThemeProvider");
-  }
-  return context;
-};
+import { useThemeStore } from "@/store/themeStore";
 
 export const CustomThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [mode, setMode] = useState<ThemeMode>(() => {
-    return (localStorage.getItem("theme") as ThemeMode) || "light";
-  });
-
-  const toggleTheme = () => {
-    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-  };
+  const { mode } = useThemeStore();
 
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove(mode === "light" ? "dark" : "light");
     root.classList.add(mode);
-
-    localStorage.setItem("theme", mode);
   }, [mode]);
 
   const theme = createTheme({
@@ -59,12 +27,15 @@ export const CustomThemeProvider = ({ children }: { children: ReactNode }) => {
           body: {},
         },
       },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          input: {
+            color: "var(--foreground) !important",
+          },
+        },
+      },
     },
   });
 
-  return (
-    <ThemeModeContext.Provider value={{ mode, toggleTheme }}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </ThemeModeContext.Provider>
-  );
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };

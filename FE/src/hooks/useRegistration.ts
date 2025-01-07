@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { register } from "@/api";
-import { useSnackbar } from "./useSnackbar";
 import { AxiosError } from "axios";
+import { useSnackbarStore } from "@/store/snackbarStore";
 
 export const useRegistration = () => {
-  const { showSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbarStore();
 
   return useMutation({
     mutationFn: (values: {

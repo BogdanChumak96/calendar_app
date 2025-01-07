@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { useSnackbar } from "./useSnackbar";
 import { AxiosError } from "axios";
 import { logout } from "@/api/auth";
+import { useSnackbarStore } from "@/store/snackbarStore";
 
 export const useLogout = () => {
-  const { showSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbarStore();
 
   return useMutation({
     mutationFn: logout,

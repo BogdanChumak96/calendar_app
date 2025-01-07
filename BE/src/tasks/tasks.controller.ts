@@ -30,8 +30,27 @@ export class TasksController {
   }
 
   @Get()
-  async getUserTasks(@GetUser('id') userId: string): Promise<Task[]> {
-    return this.tasksService.getAllTasks(userId);
+  async getUserTasks(
+    @GetUser() user: { id: string; country: string },
+  ): Promise<Task[]> {
+    return this.tasksService.getAllTasks(user.id);
+  }
+
+  @Get('search')
+  async searchTasks(
+    @GetUser('id') userId: string,
+    @Query('query') query: string,
+  ): Promise<Task[]> {
+    return this.tasksService.searchTasks(userId, query);
+  }
+
+  //can be put into a separate service by SOLID
+  @Get('holidays')
+  async getHolydays(
+    @GetUser() user: { id: string; country: string },
+    @Query('year') year: string,
+  ) {
+    return this.tasksService.getHolidays(year, user.country);
   }
 
   @Get('filter')
@@ -41,11 +60,6 @@ export class TasksController {
     @Query('endDate') endDate: string,
   ): Promise<Task[]> {
     return this.tasksService.getTasksByDateRange(userId, startDate, endDate);
-  }
-
-  @Get('user/:userId')
-  async getTasksByUser(@Param('userId') userId: string): Promise<Task[]> {
-    return this.tasksService.getTasksByUser(userId);
   }
 
   @Get(':id')

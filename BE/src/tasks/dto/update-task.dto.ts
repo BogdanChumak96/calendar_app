@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsDateString, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsDateString,
+  IsArray,
+  IsBoolean,
+} from 'class-validator';
 import { Types } from 'mongoose';
 
 export class UpdateTaskDto {
@@ -24,4 +30,8 @@ export class UpdateTaskDto {
 
   @IsOptional()
   order?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  completed: boolean;
 }

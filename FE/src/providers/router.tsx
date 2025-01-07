@@ -2,10 +2,12 @@ import { Suspense, lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PrivateRoute from "./private-router";
 import { Layout } from "@/components/Layout/Layout";
+import { Loader } from "@/components";
 
 const Login = lazy(() => import("@/pages/login"));
 const Registration = lazy(() => import("@/pages/registration"));
 const Calendar = lazy(() => import("@/pages/calendar"));
+const Error = lazy(() => import("@/pages/404"));
 
 const router = createBrowserRouter([
   {
@@ -13,7 +15,7 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <Layout>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Loader />}>
             <Calendar />
           </Suspense>
         </Layout>
@@ -23,7 +25,7 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader />}>
         <Login />
       </Suspense>
     ),
@@ -31,10 +33,14 @@ const router = createBrowserRouter([
   {
     path: "/registration",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader />}>
         <Registration />
       </Suspense>
     ),
+  },
+  {
+    path: "*",
+    element: <Error />,
   },
 ]);
 
