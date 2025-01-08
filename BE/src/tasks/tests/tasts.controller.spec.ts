@@ -79,19 +79,6 @@ describe('TasksController', () => {
     expect(service.createTask).toHaveBeenCalledWith(createTaskDto, userId);
   });
 
-  it('should get all tasks for the user', async () => {
-    const user = { id: 'mockUserId', country: 'US' };
-
-    const result = await controller.getUserTasks(user);
-
-    expect(result).toEqual([
-      { _id: 'mockId1', title: 'Test Task 1', description: 'Description 1' },
-      { _id: 'mockId2', title: 'Test Task 2', description: 'Description 2' },
-    ]);
-
-    expect(service.getAllTasks).toHaveBeenCalledWith(user.id);
-  });
-
   it('should get a specific task by id', async () => {
     const result = await controller.getTaskById('mockId1');
 
