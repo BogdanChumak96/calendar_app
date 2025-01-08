@@ -32,10 +32,7 @@ const Registration = () => {
       <Box mt={2}>
         <Typography variant='body2' align='center'>
           Already have an account?
-          <Link
-            to='/login'
-            style={{ color: "#3f51b5", textDecoration: "none" }}
-          >
+          <Link to='/home' style={{ color: "#3f51b5", textDecoration: "none" }}>
             Login here
           </Link>
         </Typography>
