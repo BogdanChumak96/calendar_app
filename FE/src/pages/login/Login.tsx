@@ -11,7 +11,7 @@ const Login = () => {
     try {
       mutate({ email: values.email, password: values.password });
       if (!isPending) {
-        navigate("/");
+        navigate("/home");
       }
     } catch (error) {
       console.error("Login failed", error);

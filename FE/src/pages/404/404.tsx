@@ -10,7 +10,7 @@ const NotFound: FC = () => {
           Oops! The page you're looking for cannot be found.
         </p>
         <Link
-          to='/'
+          to='/home'
           className='inline-block px-6 py-3 mt-4 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors duration-300'
         >
           Go Back to Home

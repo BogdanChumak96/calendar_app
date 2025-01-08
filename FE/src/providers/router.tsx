@@ -11,7 +11,7 @@ const Error = lazy(() => import("@/pages/404"));
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/home",
     element: (
       <PrivateRoute>
         <Layout>
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/login",
+    path: "/",
     element: (
       <Suspense fallback={<Loader />}>
         <Login />

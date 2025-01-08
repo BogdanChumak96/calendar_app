@@ -11,7 +11,7 @@ export const Navigation = () => {
 
   const handleLogout = () => {
     mutate();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -24,7 +24,7 @@ export const Navigation = () => {
 
       <div className='flex items-center space-x-6'>
         <Link
-          to='/'
+          to='/home'
           className='text-primary-foreground font-medium hover:text-secondary-foreground transition-colors duration-300'
         >
           Home
