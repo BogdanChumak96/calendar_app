@@ -102,7 +102,7 @@ export class AuthController {
   @Get('verify-token')
   async verifyToken(@Req() req: Request, @Res() res: Response) {
     const accessToken = req.cookies['accessToken'];
-
+    logger.log('Access token:', accessToken);
     if (!accessToken) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
