@@ -42,6 +42,7 @@ export const DayItem: FC<DayItemProps> = ({
             holidays={holidays}
             currentDate={currentDate}
             day={day}
+            
           />
 
           <TaskInput day={day} />

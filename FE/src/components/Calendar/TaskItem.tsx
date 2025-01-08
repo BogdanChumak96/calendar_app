@@ -146,9 +146,7 @@ export const TaskItem: FC<TaskItemProps> = ({
           autoFocus
         />
       ) : (
-        <span className='task-title' onDoubleClick={handleDoubleClick}>
-          {title}
-        </span>
+        <span onDoubleClick={handleDoubleClick}>{title}</span>
       )}
 
       {!isEditing && !isHoliday && isHovered && (

@@ -20,19 +20,18 @@ export const HolidayTasks: FC<HolidayTasksProps> = ({
   return (
     <div>
       {dayHolidays.length > 0 &&
-        dayHolidays.map((holiday, index) => {
+        dayHolidays.map((holiday) => {
           const isPast = dayjs(holiday.date).isBefore(currentDate, "day");
           return (
             <TaskItem
-              key={index}
+              key={holiday.date}
               title={holiday.name}
               taskId={holiday.name}
               isHoliday
               className={classNames(
-                "bg-yellow-500 text-white cursor-default p-2 rounded-md mb-1",
+                "bg-yellow-500 !text-white  cursor-default p-2 rounded-md mb-1",
                 {
                   "line-through": isPast,
-                  "text-gray-500": isPast,
                 }
               )}
             />

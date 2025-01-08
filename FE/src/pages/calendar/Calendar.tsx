@@ -1,7 +1,7 @@
-import { FC, useEffect } from "react";
+import { FC, useState, useRef, useEffect, useCallback } from "react";
 import { Box } from "@mui/material";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getHolidays, getUserTasks, updateTask } from "@/api";
+import { getHolidays, getUserTasks, updateTask, searchTasks } from "@/api";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { useCalendarStore, useTaskStore, useSnackbarStore } from "@/store";
 import {
@@ -20,20 +20,20 @@ const Calendar: FC = () => {
   const { taskMap, setTaskMap } = useTaskStore();
   const { showSnackbar } = useSnackbarStore();
   const year = currentDate.year().toString();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const { data: holidays } = useQuery<Holiday[]>({
     queryKey: ["holidays", year],
     queryFn: () => getHolidays(year),
+    refetchOnWindowFocus: false,
   });
 
-  const {
-    data: tasks,
-    isLoading,
-    isError,
-    error,
-  } = useQuery<Task[]>({
+  const { data: tasks, refetch: refetchTasks } = useQuery<Task[]>({
     queryKey: ["tasks"],
     queryFn: getUserTasks,
+    refetchOnWindowFocus: false,
   });
 
   const { mutate } = useMutation({
@@ -46,8 +46,8 @@ const Calendar: FC = () => {
     }) => updateTask(taskId, taskUpdates),
   });
 
-  useEffect(() => {
-    if (tasks) {
+  const updateTaskMap = useCallback(
+    (tasks: Task[]) => {
       const taskMap = new Map(
         tasks.map((task) => [
           task._id,
@@ -55,11 +55,48 @@ const Calendar: FC = () => {
         ])
       );
       setTaskMap(taskMap);
-    }
-  }, [tasks, setTaskMap]);
+    },
+    [setTaskMap]
+  );
 
-  if (isLoading) return <Loader />;
-  if (isError) return <div>Error loading tasks: {error.message}</div>;
+  useEffect(() => {
+    if (tasks) {
+      updateTaskMap(tasks);
+    }
+  }, [tasks, updateTaskMap]);
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(async () => {
+      if (query.trim()) {
+        try {
+          setLoading(true);
+          const result = await searchTasks(query);
+          updateTaskMap(result);
+        } catch (error) {
+          console.error("Error searching tasks:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        try {
+          const { data } = await refetchTasks();
+          if (data) {
+            updateTaskMap(data);
+          }
+        } catch (error) {
+          console.error("Error refetching tasks:", error);
+        }
+      }
+    }, 300);
+  };
+
+  if (!tasks) return <Loader />;
 
   const startOfWeek = currentDate.startOf(CalendarView.Week);
   const startOfMonth = currentDate.startOf(CalendarView.Month);
@@ -145,6 +182,9 @@ const Calendar: FC = () => {
         startOfWeek={startOfWeek}
         onPrev={handlePrev}
         onNext={handleNext}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        loading={loading}
       />
 
       <Box sx={{ my: 2 }}>
