@@ -8,15 +8,14 @@ import { DaysHeader, MonthView, WeekView, CalendarHeader } from "@/components";
 import dayjs from "dayjs";
 import { useDebounce } from "@/hooks/useDebounce";
 import { CalendarView, Holiday, Task } from "@/common/types";
-import { useLogin } from "@/hooks";
+import { useVerifyToken } from "@/hooks";
 
 const Calendar: FC = () => {
   const { view, currentDate, handlePrev, handleNext } = useCalendarStore();
   const { taskMap, setTaskMap } = useTaskStore();
   const { showSnackbar } = useSnackbarStore();
-  const { isSuccess } = useLogin();
-
   const year = currentDate.year().toString();
+  const { isAuthenticated } = useVerifyToken();
 
   const [searchQuery, setSearchQuery] = useState(() => {
     return localStorage.getItem("searchQuery") || "";
@@ -28,7 +27,7 @@ const Calendar: FC = () => {
     queryKey: ["holidays", year],
     queryFn: () => getHolidays(year),
     refetchOnWindowFocus: false,
-    enabled: isSuccess,
+    enabled: isAuthenticated,
   });
 
   const { data: tasks, isFetching } = useQuery<Task[]>({
@@ -38,7 +37,7 @@ const Calendar: FC = () => {
       return getTasks(query as string);
     },
     refetchOnWindowFocus: false,
-    enabled: isSuccess,
+    enabled: isAuthenticated,
   });
 
   const { mutate } = useMutation({
