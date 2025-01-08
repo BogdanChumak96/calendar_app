@@ -35,13 +35,13 @@ export class AuthController {
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: 'none',
       });
 
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: 'none',
       });
 
       logger.log('Cookies set successfully');
@@ -67,13 +67,13 @@ export class AuthController {
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: 'none',
       });
 
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: 'none',
       });
 
       return res.status(201).send({ message: 'User registered successfully' });
@@ -87,13 +87,13 @@ export class AuthController {
     res.clearCookie('accessToken', {
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: 'none',
     });
 
     res.clearCookie('refreshToken', {
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: 'none',
     });
 
     return res.status(200).send({ message: 'Logged out successfully' });
