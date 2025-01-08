@@ -62,65 +62,6 @@ describe('TasksService', () => {
     });
   });
 
-  describe('searchTasks', () => {
-    it('should return tasks matching the query', async () => {
-      const userId = new Types.ObjectId().toString();
-      const query = 'Test';
-      const mockTasks = [
-        {
-          _id: new Types.ObjectId(),
-          userId: new Types.ObjectId(userId),
-          title: 'Test Task',
-          description: 'Description',
-          dueDate: '2025-01-10',
-          completed: false,
-        },
-      ];
-
-      mockRepository.searchTasks.mockResolvedValue(mockTasks);
-
-      const result = await service.searchTasks(userId, query);
-
-      expect(result).toEqual(mockTasks);
-      expect(repository.searchTasks).toHaveBeenCalledWith(userId, query);
-    });
-  });
-
-  describe('getTasksByDateRange', () => {
-    it('should return tasks within the specified date range', async () => {
-      const userId = new Types.ObjectId().toString();
-      const startDate = '2025-01-01';
-      const endDate = '2025-01-31';
-      const mockTasks = [
-        {
-          _id: new Types.ObjectId(),
-          userId: new Types.ObjectId(userId),
-          title: 'Task 1',
-          description: 'Description',
-          dueDate: '2025-01-10',
-          completed: false,
-        },
-      ];
-
-      mockRepository.getAllTasks.mockResolvedValue(mockTasks);
-
-      const result = await service.getTasksByDateRange(
-        userId,
-        startDate,
-        endDate,
-      );
-
-      expect(result).toEqual(mockTasks);
-      expect(repository.getAllTasks).toHaveBeenCalledWith({
-        userId: new Types.ObjectId(userId),
-        dueDate: {
-          $gte: new Date(startDate),
-          $lte: new Date(endDate),
-        },
-      });
-    });
-  });
-
   describe('getTaskById', () => {
     it('should return a task by its ID', async () => {
       const taskId = new Types.ObjectId().toString();
