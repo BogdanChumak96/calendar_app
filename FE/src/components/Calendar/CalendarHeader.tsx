@@ -7,6 +7,8 @@ import {
   CircularProgress,
 } from "@mui/material";
 import dayjs from "dayjs";
+import { CalendarController } from "./CalendarController";
+import { CustomTooltip } from "../Tooltip";
 
 interface CalendarHeaderProps {
   view: string;
@@ -41,11 +43,15 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
       display='flex'
       justifyContent='space-between'
       alignItems='center'
-      sx={{ mb: 3 }}
+      sx={{ mb: 8 }}
     >
-      <Typography variant='h4' className='font-bold'>
-        {headerTitle}
-      </Typography>
+      <Box display='flex' alignItems='center' gap={2}>
+        <Typography variant='h4' className='font-bold'>
+          {headerTitle}
+        </Typography>
+        <CalendarController />
+        <CustomTooltip />
+      </Box>
       <Box display='flex' alignItems='center'>
         <TextField
           value={searchQuery}
@@ -62,7 +68,7 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
             },
           }}
           InputProps={{
-            endAdornment: (
+            endAdornment: loading && (
               <Box
                 sx={{
                   width: "24px",
@@ -72,12 +78,10 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
                   justifyContent: "center",
                 }}
               >
-                {loading && (
-                  <CircularProgress
-                    size={20}
-                    sx={{ color: "var(--foreground)" }}
-                  />
-                )}
+                <CircularProgress
+                  size={20}
+                  sx={{ color: "var(--foreground)" }}
+                />
               </Box>
             ),
           }}

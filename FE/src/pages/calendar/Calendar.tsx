@@ -4,14 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { getHolidays, getTasks, updateTask } from "@/api";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { useCalendarStore, useTaskStore, useSnackbarStore } from "@/store";
-import {
-  DaysHeader,
-  MonthView,
-  WeekView,
-  CalendarController,
-  CalendarHeader,
-  CustomTooltip,
-} from "@/components";
+import { DaysHeader, MonthView, WeekView, CalendarHeader } from "@/components";
 import dayjs from "dayjs";
 import { useDebounce } from "@/hooks/useDebounce";
 import { CalendarView, Holiday, Task } from "@/common/types";
@@ -169,11 +162,6 @@ const Calendar: FC = () => {
         onSearchChange={handleSearchChange}
         loading={isFetching}
       />
-
-      <Box sx={{ my: 2 }}>
-        <CalendarController />
-        <CustomTooltip />
-      </Box>
 
       <Box>
         <DaysHeader />
