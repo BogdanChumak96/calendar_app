@@ -3,6 +3,7 @@ import {
   ConflictException,
   Controller,
   Get,
+  Logger,
   Post,
   Req,
   Res,
@@ -12,6 +13,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login-user.dto';
 import { RegisterDto } from './dto/register-user.dto';
 import { Request, Response } from 'express';
+const logger = new Logger('AuthController');
 
 @Controller('auth')
 export class AuthController {
@@ -20,8 +22,15 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Res() res: Response) {
     try {
+      logger.log('Received login request');
+      logger.debug(`Login data: ${JSON.stringify(loginDto)}`);
+
       const { accessToken, refreshToken } =
         await this.authService.login(loginDto);
+
+      logger.log('Tokens generated successfully');
+      logger.debug(`Access token: ${accessToken}`);
+      logger.debug(`Refresh token: ${refreshToken}`);
 
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
@@ -35,8 +44,12 @@ export class AuthController {
         sameSite: 'strict',
       });
 
+      logger.log('Cookies set successfully');
+
       return res.send({ message: 'Login successful' });
     } catch (error) {
+      logger.error('Login failed');
+      logger.error(error.message);
       throw new UnauthorizedException('Invalid email or password');
     }
   }
