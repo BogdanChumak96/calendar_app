@@ -1,7 +1,6 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Droppable } from "@hello-pangea/dnd";
-import { Task } from "@/common/types";
-import { Holiday } from "@/common/types";
+import { Task, Holiday } from "@/common/types";
 import { DraggableTasks } from "./DraggableTasks";
 import dayjs from "dayjs";
 import { HolidayTasks } from "./HolidayTasks";

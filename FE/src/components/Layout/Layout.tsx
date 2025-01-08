@@ -8,7 +8,7 @@ interface LayoutProps {
 export const Layout: FC<LayoutProps> = ({ children = null }) => {
   return (
     <div className='flex flex-col min-h-screen bg-background text-foreground transition-colors duration-300'>
-      <header className='bg-primary  text-primary-foreground'>
+      <header className='bg-primary  mb-4 text-primary-foreground'>
         <Navigation />
       </header>
 
