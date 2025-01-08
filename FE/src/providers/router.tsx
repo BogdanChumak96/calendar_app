@@ -7,7 +7,7 @@ import { Loader } from "@/components";
 const Login = lazy(() => import("@/pages/login"));
 const Registration = lazy(() => import("@/pages/registration"));
 const Calendar = lazy(() => import("@/pages/calendar"));
-const Error = lazy(() => import("@/pages/404"));
+const ErrorPage = lazy(() => import("@/pages/404"));
 
 const router = createBrowserRouter([
   {
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <Error />,
+    element: <ErrorPage />,
   },
 ]);
 
