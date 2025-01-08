@@ -62,7 +62,14 @@ export const MonthView: FC<MonthViewProps> = ({
           >
             {isValidDate && (
               <>
-                <div className='text-xs text-gray-500 ml-2'>
+                <div
+                  className={`text-center text-sm font-medium border-b-1 border-white 
+              ${
+                dayjs().isSame(cellDate, "day")
+                  ? "bg-primary/10 text-white border-primary"
+                  : "text-gray-300 border-gray-700 hover:text-white hover:bg-gray-700"
+              }`}
+                >
                   {dayjs(cellDate).date()}
                 </div>
 

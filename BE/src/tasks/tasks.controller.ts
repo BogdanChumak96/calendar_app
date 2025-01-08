@@ -30,18 +30,11 @@ export class TasksController {
   }
 
   @Get()
-  async getUserTasks(
-    @GetUser() user: { id: string; country: string },
-  ): Promise<Task[]> {
-    return this.tasksService.getAllTasks(user.id);
-  }
-
-  @Get('search')
-  async searchTasks(
+  async getTasks(
     @GetUser('id') userId: string,
-    @Query('query') query: string,
+    @Query('query') query?: string,
   ): Promise<Task[]> {
-    return this.tasksService.searchTasks(userId, query);
+    return this.tasksService.getTasks(userId, query);
   }
 
   //can be put into a separate service by SOLID

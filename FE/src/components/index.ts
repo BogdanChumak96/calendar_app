@@ -5,3 +5,4 @@ export * from "./Layout";
 export * from "./Navigation";
 export * from "./Calendar";
 export * from "./Loader";
+export * from "./Tooltip";

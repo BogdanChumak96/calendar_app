@@ -29,7 +29,7 @@ export const HolidayTasks: FC<HolidayTasksProps> = ({
               taskId={holiday.name}
               isHoliday
               className={classNames(
-                "bg-yellow-500 !text-white  cursor-default p-2 rounded-md mb-1",
+                "!bg-yellow-500 !text-white cursor-default rounded-md mb-1",
                 {
                   "line-through": isPast,
                 }

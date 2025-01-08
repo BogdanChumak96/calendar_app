@@ -16,7 +16,7 @@ interface CalendarHeaderProps {
   onNext: () => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  loading: boolean;
+  loading?: boolean;
 }
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ({
@@ -56,14 +56,30 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
           sx={{
             borderRadius: "4px",
             marginRight: "16px",
+            width: "250px",
             input: {
               color: "var(--foreground)",
             },
           }}
           InputProps={{
-            endAdornment: loading ? (
-              <CircularProgress size={20} sx={{ color: "var(--foreground)" }} />
-            ) : null,
+            endAdornment: (
+              <Box
+                sx={{
+                  width: "24px",
+                  height: "24px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {loading && (
+                  <CircularProgress
+                    size={20}
+                    sx={{ color: "var(--foreground)" }}
+                  />
+                )}
+              </Box>
+            ),
           }}
         />
         <Button variant='outlined' onClick={onPrev} className='mr-2'>
