@@ -20,10 +20,8 @@ export class TasksService {
     return this.tasksRepository.createTask(taskData);
   }
 
-  async searchTasks(userId: string, query: string): Promise<Task[]> {
-    const tasks = await this.tasksRepository.searchTasks(userId, query);
-
-    return tasks;
+  async getTasks(userId: string, query?: string): Promise<Task[]> {
+    return this.tasksRepository.getTasks(userId, query);
   }
 
   async getHolidays(year: string, code: string) {
@@ -55,11 +53,7 @@ export class TasksService {
         : { $lte: new Date(endDate) };
     }
 
-    return this.tasksRepository.getAllTasks(filter);
-  }
-
-  async getAllTasks(userId: string): Promise<Task[]> {
-    return this.tasksRepository.getAllTasks({ userId });
+    return this.tasksRepository.getTasks(filter);
   }
 
   async getTasksByUser(userId: string): Promise<Task[]> {

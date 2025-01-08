@@ -68,7 +68,7 @@ const TaskInput: FC<{ day: string }> = ({ day }) => {
           onKeyDown={handleCreateTask}
           autoFocus
           placeholder='Enter task'
-          className='mb-2 rounded-md border bg-primary/40 text-dark-text'
+          className='mb-2 rounded-md border bg-primary/40 text-dark-text pl-1'
         />
       )}
     </div>

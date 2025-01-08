@@ -15,7 +15,7 @@ export const Navigation = () => {
   };
 
   return (
-    <nav className='flex justify-between items-center px-4 py-2 max-w-7xl mx-auto bg-transparent transition-colors duration-300'>
+    <nav className='flex justify-between items-center px-4 py-2 max-w-7.5xl mx-auto bg-transparent transition-colors duration-300'>
       <div className='fixed inset-0 bg-primary transition-colors duration-300 -z-10'></div>
 
       <div className='text-2xl font-bold text-primary-foreground'>

@@ -1,23 +1,6 @@
 import { AxiosError } from "axios";
 import apiClient from "./client";
 
-export const getUserTasks = async () => {
-  try {
-    const response = await apiClient.get("tasks");
-    return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.error(
-        "Error fetching tasks:",
-        error.response?.data || error.message
-      );
-    } else {
-      console.error("Unexpected error:", error);
-    }
-    throw error;
-  }
-};
-
 export const getTaskById = async (taskId: string) => {
   try {
     const response = await apiClient.get(`tasks/${taskId}`);
@@ -143,10 +126,10 @@ export const getHolidays = async (year: string) => {
   }
 };
 
-export const searchTasks = async (query: string) => {
+export const getTasks = async (query: string = "") => {
   try {
-    const response = await apiClient.get("tasks/search", {
-      params: { query },
+    const response = await apiClient.get("tasks", {
+      params: { query: query.trim() || undefined },
     });
     return response.data;
   } catch (error) {

@@ -32,21 +32,20 @@ export class TasksRepository {
       .exec();
   }
 
-  async getAllTasks(filter: {
-    userId: string | Types.ObjectId;
-  }): Promise<Task[]> {
-    if (filter.userId && typeof filter.userId === 'string') {
-      filter.userId = new Types.ObjectId(filter.userId);
+  async getTasks(
+    userId: string | Types.ObjectId,
+    query?: string,
+  ): Promise<Task[]> {
+    const userIdObject =
+      typeof userId === 'string' ? new Types.ObjectId(userId) : userId;
+
+    const filter: any = { userId: userIdObject };
+
+    if (query?.trim()) {
+      filter.title = { $regex: query.trim(), $options: 'i' };
     }
 
     return this.taskModel.find(filter).exec();
-  }
-
-  async searchTasks(userId: string, query: string): Promise<Task[]> {
-    return this.taskModel.find({
-      userId: new Types.ObjectId(userId),
-      title: { $regex: query, $options: 'i' },
-    });
   }
 
   async findTasksByUser(userId: string): Promise<Task[]> {

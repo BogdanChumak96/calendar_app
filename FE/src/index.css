@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+body {
+  overflow: hidden;
+}
+
 @layer base {
   :root {
     --background: 210 36% 96%;

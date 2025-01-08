@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { Task } from "@/common/types";
 import { Holiday } from "@/common/types";
@@ -24,33 +24,27 @@ export const DayItem: FC<DayItemProps> = ({
     .sort((a, b) => (a.order || 0) - (b.order || 0));
 
   return (
-    <Droppable droppableId={day}>
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.droppableProps}
-          className='flex flex-col'
-          style={{
-            minHeight: "150px",
-            padding: "8px",
-            borderRadius: "4px",
-            transition: "background-color 0.3s ease",
-            overflowY: "auto",
-          }}
-        >
-          <HolidayTasks
-            holidays={holidays}
-            currentDate={currentDate}
-            day={day}
-            
-          />
-
-          <TaskInput day={day} />
-
-          <DraggableTasks tasks={sortedTasks} />
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>
+    <div className='bg-primary/4 overflow-y-auto p-2'>
+      <HolidayTasks holidays={holidays} currentDate={currentDate} day={day} />
+      <Droppable droppableId={day}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className='flex flex-col'
+            style={{
+              minHeight: "180px",
+              borderRadius: "4px",
+              transition: "background-color 0.3s ease",
+              overflowY: "auto",
+            }}
+          >
+            <TaskInput day={day} />
+            <DraggableTasks tasks={sortedTasks} />
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </div>
   );
 };

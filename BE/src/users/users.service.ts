@@ -22,16 +22,7 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    try {
-      const user = await this.userRepository.findByEmail(email);
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-      return user;
-    } catch (error) {
-      console.error('Error in findByEmail:', error);
-      throw error;
-    }
+    return await this.userRepository.findByEmail(email);
   }
 
   async update(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
